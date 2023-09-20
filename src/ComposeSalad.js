@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import inventory from './inventory.mjs';
+import Salad from './Salad.js';
 
 function filter(inv, prop) {
   const res = Object.keys(inv)
@@ -19,12 +21,21 @@ function ComposeSalad(props) {
   const [dressing, setDressing] = useState('');
 
   function handleSubmit(e) {
-    console.log(foundation, protein, extras, dressing);
+    let salad = new Salad()
+      .add(foundation, inventory[foundation])
+      .add(protein, inventory[protein])
+      .add(dressing, inventory[dressing]);
+    Object.keys(extras).forEach((name) => salad.add(name, inventory[name]));
+
+    // Reset all values
     setFoundation('');
     setProtein('');
     setExtra({});
     setDressing('');
 
+    props.onChange((prevState) => [...prevState, salad]);
+
+    // Prevent webpage reload
     e.preventDefault();
   }
 
@@ -59,7 +70,6 @@ function ComposeSalad(props) {
 }
 
 function Component({ options, value, onChange }) {
-  console.log(value);
   return (
     <div className="form-group pb-3 col-3">
       <select
