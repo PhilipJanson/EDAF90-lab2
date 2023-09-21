@@ -2,25 +2,29 @@ import { useState } from 'react';
 import inventory from './inventory.mjs';
 import Salad from './Salad.js';
 
-function filter(inv, prop) {
-  const res = Object.keys(inv)
-    .filter((name) => inv[name][prop])
-    .sort((a, b) => a.localeCompare(b, 'sv', { sensitivity: 'case' }));
-  return res;
-}
-
 function ComposeSalad(props) {
+  // Lists of all ingredients
   const foundationList = filter(props.inventory, 'foundation');
   const proteinList = filter(props.inventory, 'protein');
   const extrasList = filter(props.inventory, 'extra');
   const dressingList = filter(props.inventory, 'dressing');
 
+  // States
   const [foundation, setFoundation] = useState('Pasta');
   const [protein, setProtein] = useState('');
   const [extras, setExtra] = useState({ Bacon: true, Fetaost: true });
   const [dressing, setDressing] = useState('');
 
   function handleSubmit(e) {
+    // Prevent webpage reload
+    e.preventDefault();
+
+    // Check if all values are selected
+    if (checkEmpty(foundation, protein, extras, dressing)) {
+      return;
+    }
+
+    // Create new salad
     let salad = new Salad()
       .add(foundation, inventory[foundation])
       .add(protein, inventory[protein])
@@ -33,10 +37,8 @@ function ComposeSalad(props) {
     setExtra({});
     setDressing('');
 
-    props.onChange((prevState) => [...prevState, salad]);
-
-    // Prevent webpage reload
-    e.preventDefault();
+    // Update salad list in App
+    props.setMethod((prevState) => [...prevState, salad]);
   }
 
   return (
@@ -45,23 +47,30 @@ function ComposeSalad(props) {
       <form onSubmit={handleSubmit}>
         <label>Välj Bas</label>
         <Component
+          inv={props.inventory}
           options={foundationList}
           value={foundation}
-          onChange={setFoundation}
+          setMethod={setFoundation}
         />
         <label>Välj Protein</label>
         <Component
+          inv={props.inventory}
           options={proteinList}
           value={protein}
-          onChange={setProtein}
+          setMethod={setProtein}
         />
         <label>Välj Tillbehör</label>
-        <Extras options={extrasList} values={extras} onChange={setExtra} />
+        <Extras
+          inv={props.inventory} 
+          options={extrasList} 
+          values={extras} 
+          setMethod={setExtra} />
         <label>Välj Dressing</label>
         <Component
+          inv={props.inventory}
           options={dressingList}
           value={dressing}
-          onChange={setDressing}
+          setMethod={setDressing}
         />
         <input type="submit" className="btn btn-primary" value="Beställ" />
       </form>
@@ -69,17 +78,18 @@ function ComposeSalad(props) {
   );
 }
 
-function Component({ options, value, onChange }) {
+function Component({ inv, options, value, setMethod }) {
   return (
     <div className="form-group pb-3 col-3">
       <select
         value={value}
         className="form-select"
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => setMethod(e.target.value)}
       >
+        <option disabled={true} value="">Gör ditt val</option>
         {options.map((name) => (
           <option value={name} key={name}>
-            {name}
+            {getNameAndPrice(inv, name)}
           </option>
         ))}
       </select>
@@ -87,7 +97,7 @@ function Component({ options, value, onChange }) {
   );
 }
 
-function Extras({ options, values, onChange }) {
+function Extras({ inv, options, values, setMethod }) {
   return (
     <div className="row pb-3 col-12">
       {options.map((name) => (
@@ -98,9 +108,11 @@ function Extras({ options, values, onChange }) {
             type="checkbox"
             checked={name in values}
             onChange={(e) => {
-              onChange((prevState) => {
+              setMethod((prevState) => {
+                // Previous state
                 const state = { ...prevState };
 
+                // Add or delete extra
                 if (e.target.checked) {
                   state[e.target.name] = true;
                 } else {
@@ -111,11 +123,43 @@ function Extras({ options, values, onChange }) {
               });
             }}
           />
-          <label className="form-check-label">{name}</label>
+          <label className="form-check-label">{getNameAndPrice(inv, name)}</label>
         </div>
       ))}
     </div>
   );
+}
+
+function filter(inv, prop) {
+  const res = Object.keys(inv)
+    .filter((name) => inv[name][prop])
+    .sort((a, b) => a.localeCompare(b, 'sv', { sensitivity: 'case' }));
+  return res;
+}
+
+function getNameAndPrice(inv, name) {
+  return name + ' (' + inv[name].price + ' kr)';
+}
+
+function checkEmpty(foundation, protein, extras, dressing) {
+  if (foundation == '') {
+    alert("Ingen bas vald");
+    return true;
+  }
+  if (protein == '') {
+    alert("Inget protein valt");
+    return true;
+  }
+  if (Object.keys(extras).length == 0) {
+    alert("Inga tillbehör valda");
+    return true;
+  }
+  if (dressing == '') {
+    alert("Ingen dressing vald");
+    return true;
+  }
+
+  return false;
 }
 
 export default ComposeSalad;
