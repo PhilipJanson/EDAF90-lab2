@@ -31,6 +31,12 @@ class Salad {
     return Object.values(this.ingredients).filter((a) => a[prop]).length;
   }
 
+  getDisplayString() {
+    return Object.keys(this.ingredients)
+    .sort((a, b) => a.localeCompare(b, 'sv', { sensitivity: 'case' }))
+    .reduce((a, b) => a + ', ' + b) + ', pris: ' + this.getPrice() + ' kr';
+  }
+
   static parse(json) {
     const data = JSON.parse(json);
 
