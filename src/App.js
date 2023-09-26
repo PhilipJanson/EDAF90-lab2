@@ -14,7 +14,7 @@ function App() {
         <span className="fs-4">Min egen salladsbar</span>
       </header>
       <ViewOrder salads={salads} />
-      <ComposeSalad inventory={inventory} setMethod={setSalad} />
+      <ComposeSalad inventory={inventory} addSalad={setSalad} />
       <footer className="pt-3 mt-4 text-muted border-top">
         EDAF90 - webprogrammering
       </footer>

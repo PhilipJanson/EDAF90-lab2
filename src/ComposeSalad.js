@@ -19,6 +19,14 @@ function ComposeSalad(props) {
     // Prevent webpage reload
     e.preventDefault();
 
+    // Validate the form
+    e.target.classList.add("was-validated");
+
+    // Cancel order if form is invalid
+    if (!e.target.checkValidity()) {
+      return;
+    }
+
     // Create new salad
     let salad = new Salad()
       .add(foundation, inventory[foundation])
@@ -32,40 +40,44 @@ function ComposeSalad(props) {
     setExtra({});
     setDressing('');
 
+    // Remove was validated from form and all children
+    e.target.classList.remove("was-validated");
+    Array.prototype.forEach.call(e.target.children, (child) => child.classList.remove("was-validated"));
+
     // Update salad list in App
-    props.setMethod((prevState) => [...prevState, salad]);
+    props.addSalad((prevState) => [...prevState, salad]);
   }
 
   return (
     <div className="row h-200 p-5 bg-light border rounded-3">
       <h2>Välj innehållet i din sallad</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <label>Välj Bas</label>
-        <Component
+        <SaladComponent
           inv={props.inventory}
           options={foundationList}
           value={foundation}
-          setMethod={setFoundation}
+          onChange={setFoundation}
         />
         <label>Välj Protein</label>
-        <Component
+        <SaladComponent
           inv={props.inventory}
           options={proteinList}
           value={protein}
-          setMethod={setProtein}
+          onChange={setProtein}
         />
         <label>Välj Tillbehör</label>
         <Extras
           inv={props.inventory} 
           options={extrasList} 
           values={extras} 
-          setMethod={setExtra} />
+          onChange={setExtra} />
         <label>Välj Dressing</label>
-        <Component
+        <SaladComponent
           inv={props.inventory}
           options={dressingList}
           value={dressing}
-          setMethod={setDressing}
+          onChange={setDressing}
         />
         <input type="submit" className="btn btn-primary" value="Beställ" />
       </form>
@@ -73,13 +85,17 @@ function ComposeSalad(props) {
   );
 }
 
-function Component({ inv, options, value, setMethod }) {
+function SaladComponent({ inv, options, value, onChange }) {
   return (
     <div className="form-group pb-3 col-3">
       <select
         value={value}
         className="form-select"
-        onChange={(e) => setMethod(e.target.value)}
+        onChange={(e) => {
+          //Validate the select
+          e.target.parentElement.classList.add("was-validated");
+          onChange(e.target.value);
+        }}
         required
       >
         <option disabled={true} value="">Gör ditt val</option>
@@ -89,11 +105,17 @@ function Component({ inv, options, value, setMethod }) {
           </option>
         ))}
       </select>
+      <div className='valid-feedback'>
+        Korrekt
+      </div>
+      <div className='invalid-feedback'>
+        Välj en av ingredienserna
+      </div>
     </div>
   );
 }
 
-function Extras({ inv, options, values, setMethod }) {
+function Extras({ inv, options, values, onChange }) {
   return (
     <div className="row pb-3 col-12">
       {options.map((name) => (
@@ -105,7 +127,7 @@ function Extras({ inv, options, values, setMethod }) {
             type="checkbox"
             checked={name in values}
             onChange={(e) => {
-              setMethod((prevState) => {
+              onChange((prevState) => {
                 // Previous state
                 const state = { ...prevState };
 
@@ -136,23 +158,6 @@ function filter(inv, prop) {
 
 function getNameAndPrice(inv, name) {
   return name + ' (' + inv[name].price + ' kr)';
-}
-
-function checkEmpty(foundation, protein, dressing) {
-  if (foundation === '') {
-    alert("Ingen bas vald");
-    return true;
-  }
-  if (protein === '') {
-    alert("Inget protein valt");
-    return true;
-  }
-  if (dressing === '') {
-    alert("Ingen dressing vald");
-    return true;
-  }
-
-  return false;
 }
 
 export default ComposeSalad;
