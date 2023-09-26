@@ -1,5 +1,7 @@
-function ViewOrder(props) {
-  const salads = props.salads;
+import { useOutletContext } from "react-router-dom";
+
+function ViewOrder() {
+  const [salads, inventory, addSalad] = useOutletContext();
 
   return (
     <div className="row h-200 p-5 bg-light border rounded-3">

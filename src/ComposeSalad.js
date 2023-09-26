@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import inventory from './inventory.mjs';
 import Salad from './Salad.js';
+import { useOutletContext } from 'react-router-dom';
 
-function ComposeSalad(props) {
+function ComposeSalad() {
+  const [salads, inventory, addSalad] = useOutletContext();
+
   // Lists of all ingredients
-  const foundationList = filter(props.inventory, 'foundation');
-  const proteinList = filter(props.inventory, 'protein');
-  const extrasList = filter(props.inventory, 'extra');
-  const dressingList = filter(props.inventory, 'dressing');
+  const foundationList = filter(inventory, 'foundation');
+  const proteinList = filter(inventory, 'protein');
+  const extrasList = filter(inventory, 'extra');
+  const dressingList = filter(inventory, 'dressing');
 
   // States
   const [foundation, setFoundation] = useState('');
@@ -45,7 +47,7 @@ function ComposeSalad(props) {
     Array.prototype.forEach.call(e.target.children, (child) => child.classList.remove("was-validated"));
 
     // Update salad list in App
-    props.addSalad((prevState) => [...prevState, salad]);
+    addSalad((prevState) => [...prevState, salad]);
   }
 
   return (
@@ -54,27 +56,27 @@ function ComposeSalad(props) {
       <form onSubmit={handleSubmit} noValidate>
         <label>Välj Bas</label>
         <SaladComponent
-          inv={props.inventory}
+          inv={inventory}
           options={foundationList}
           value={foundation}
           onChange={setFoundation}
         />
         <label>Välj Protein</label>
         <SaladComponent
-          inv={props.inventory}
+          inv={inventory}
           options={proteinList}
           value={protein}
           onChange={setProtein}
         />
         <label>Välj Tillbehör</label>
         <Extras
-          inv={props.inventory} 
+          inv={inventory} 
           options={extrasList} 
           values={extras} 
           onChange={setExtra} />
         <label>Välj Dressing</label>
         <SaladComponent
-          inv={props.inventory}
+          inv={inventory}
           options={dressingList}
           value={dressing}
           onChange={setDressing}
