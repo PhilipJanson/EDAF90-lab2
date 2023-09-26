@@ -20,7 +20,7 @@ function ComposeSalad(props) {
     e.preventDefault();
 
     // Check if all values are selected
-    if (checkEmpty(foundation, protein, extras, dressing)) {
+    if (checkEmpty(foundation, protein, dressing)) {
       return;
     }
 
@@ -103,6 +103,7 @@ function Extras({ inv, options, values, setMethod }) {
       {options.map((name) => (
         <div className="form-check col-3" key={name}>
           <input
+            id={name}
             name={name}
             className="form-check-input"
             type="checkbox"
@@ -123,7 +124,7 @@ function Extras({ inv, options, values, setMethod }) {
               });
             }}
           />
-          <label className="form-check-label">{getNameAndPrice(inv, name)}</label>
+          <label className="form-check-label" htmlFor={name}>{getNameAndPrice(inv, name)}</label>
         </div>
       ))}
     </div>
@@ -141,20 +142,16 @@ function getNameAndPrice(inv, name) {
   return name + ' (' + inv[name].price + ' kr)';
 }
 
-function checkEmpty(foundation, protein, extras, dressing) {
-  if (foundation == '') {
+function checkEmpty(foundation, protein, dressing) {
+  if (foundation === '') {
     alert("Ingen bas vald");
     return true;
   }
-  if (protein == '') {
+  if (protein === '') {
     alert("Inget protein valt");
     return true;
   }
-  if (Object.keys(extras).length == 0) {
-    alert("Inga tillbehör valda");
-    return true;
-  }
-  if (dressing == '') {
+  if (dressing === '') {
     alert("Ingen dressing vald");
     return true;
   }
