@@ -10,19 +10,14 @@ function ComposeSalad(props) {
   const dressingList = filter(props.inventory, 'dressing');
 
   // States
-  const [foundation, setFoundation] = useState('Pasta');
+  const [foundation, setFoundation] = useState('');
   const [protein, setProtein] = useState('');
-  const [extras, setExtra] = useState({ Bacon: true, Fetaost: true });
+  const [extras, setExtra] = useState({});
   const [dressing, setDressing] = useState('');
 
   function handleSubmit(e) {
     // Prevent webpage reload
     e.preventDefault();
-
-    // Check if all values are selected
-    if (checkEmpty(foundation, protein, dressing)) {
-      return;
-    }
 
     // Create new salad
     let salad = new Salad()
@@ -85,6 +80,7 @@ function Component({ inv, options, value, setMethod }) {
         value={value}
         className="form-select"
         onChange={(e) => setMethod(e.target.value)}
+        required
       >
         <option disabled={true} value="">Gör ditt val</option>
         {options.map((name) => (
