@@ -29,6 +29,11 @@ function NavBar() {
   return (
     <ul className="nav nav-tabs">
       <li className="nav-item">
+        <NavLink className="nav-link" to="/">
+          Hem
+        </NavLink>
+      </li>
+      <li className="nav-item">
         <NavLink className="nav-link" to="/compose-salad">
           Komponera en sallad
         </NavLink>
@@ -51,3 +56,6 @@ function Footer() {
 }
 
 export default App;
+export {
+  NavBar
+}

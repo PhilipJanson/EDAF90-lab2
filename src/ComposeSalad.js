@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Salad from './Salad.js';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 
 function ComposeSalad() {
   const [salads, inventory, addSalad] = useOutletContext();
+  const navigate = useNavigate();
 
   // Lists of all ingredients
   const foundationList = filter(inventory, 'foundation');
@@ -48,6 +49,7 @@ function ComposeSalad() {
 
     // Update salad list in App
     addSalad((prevState) => [...prevState, salad]);
+    navigate(`/view-order/confirm/${salad.uuid}`)
   }
 
   return (
