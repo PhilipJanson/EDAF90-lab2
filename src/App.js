@@ -1,5 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { useState } from 'react';
 import { NavLink, Outlet } from "react-router-dom";
 import inventory from './inventory.mjs';
@@ -56,6 +57,4 @@ function Footer() {
 }
 
 export default App;
-export {
-  NavBar
-}
+export { NavBar };

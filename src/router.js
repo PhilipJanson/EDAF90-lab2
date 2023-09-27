@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from './App';
 import ErrorPage from "./error";
 import ComposeSalad from "./ComposeSalad";
-import ViewOrder from "./ViewOrder";
+import { ViewOrder, Confirm } from "./ViewOrder";
 import Index from "./index.js"
 
 const router = createBrowserRouter([
@@ -19,9 +19,12 @@ const router = createBrowserRouter([
         element: <ComposeSalad />
       },
       {
-        path: "/view-order/*",
+        path: "/view-order",
         element: <ViewOrder />
-        
+      },
+      {
+        path: "/view-order/confirm/*",
+        element: <Confirm />
       }
     ]
   },
