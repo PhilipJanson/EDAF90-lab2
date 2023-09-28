@@ -1,10 +1,19 @@
 import { useOutletContext } from "react-router-dom";
 
 function Confirm() {
+  const [salads, inventory, addSalad] = useOutletContext();
+  var uuid = window.location.pathname.replace("/view-order/confirm/", "");
+  console.log(uuid)
+  const salad = salads.find((salad) => salad.uuid === uuid);
+
+  if (!salad) {
+    return (<ViewOrder />);
+  }
+
   return (
     <>
       <div class="alert alert-success alter-dismissable fade show" role="alert">
-        Alert
+        En sallad har lagts till i varukorgen: {salad.getDisplayString()}
         <button type="button" class="close" data-dismiss="alert">
           <span aria-hidden="true">&times;</span>
         </button>
