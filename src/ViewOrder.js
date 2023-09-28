@@ -12,9 +12,9 @@ function Confirm() {
 
   return (
     <>
-      <div class="alert alert-success alter-dismissable fade show" role="alert">
+      <div className="alert alert-success alter-dismissable fade show" role="alert">
         En sallad har lagts till i varukorgen: {salad.getDisplayString()}
-        <button type="button" class="close" data-dismiss="alert">
+        <button type="button" className="close" data-dismiss="alert">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
