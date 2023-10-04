@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Salad from './Salad.js';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useOutletContext, useLoaderData, useNavigate } from 'react-router-dom';
 
 function ComposeSalad() {
-  const [salads, inventory, addSalad] = useOutletContext();
+  const inventory = useLoaderData();
+  const [salads, inventory1, addSalad] = useOutletContext();
   const navigate = useNavigate();
 
   // Lists of all ingredients
