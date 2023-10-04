@@ -1,13 +1,13 @@
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams, Outlet } from "react-router-dom";
 
 function Confirm() {
-  const [salads, inventory, addSalad] = useOutletContext();
-  var uuid = window.location.pathname.replace("/view-order/confirm/", "");
+  const [salads] = useOutletContext();
+  const uuid = useParams().uuid;
   console.log(uuid)
   const salad = salads.find((salad) => salad.uuid === uuid);
 
   if (!salad) {
-    return (<ViewOrder />);
+    return null;
   }
 
   return (
@@ -18,7 +18,6 @@ function Confirm() {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <ViewOrder />
     </>
   );
 }
@@ -28,6 +27,7 @@ function ViewOrder() {
 
   return (
     <div className="row h-200 p-5 bg-light border rounded-3">
+      <Outlet context={[salads]}></Outlet>
       <h2>Varukorgen</h2>
       <ul className="list-group">
         {salads.map((salad) => (
