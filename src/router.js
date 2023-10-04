@@ -38,7 +38,7 @@ async function inventoryLoader() {
   const inventory = {};
 
   await Promise.all([
-    new Promise((resolve) => setTimeout(resolve, 0)),
+    new Promise((resolve) => setTimeout(resolve, 500)),
     fetchCategory("foundations", inventory),
     fetchCategory("proteins", inventory),
     fetchCategory("extras", inventory),

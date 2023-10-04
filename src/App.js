@@ -1,24 +1,28 @@
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { useState } from 'react';
-import { NavLink, Outlet } from "react-router-dom";
-import inventory from './inventory.mjs';
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import { useState } from "react";
+import { NavLink, Outlet, useNavigation } from "react-router-dom";
+import inventory from "./inventory.mjs";
 
 function App() {
   const [salads, setSalad] = useState([]);
+
+  const isLoading = useNavigation().state === 'loading';
+  //console.log(isLoading)
+  const element = isLoading ? <BootstrapSpinner/>: <Outlet context={[salads, inventory, setSalad]} />;
 
   return (
     <div className="container py-4">
       <Header />
       <NavBar />
-      <Outlet context={[ salads, inventory, setSalad ]} />
+      {element}
       <Footer />
     </div>
   );
 }
 
-function Header() { 
+function Header() {
   return (
     <header className="pb-3 mb-4 border-bottom">
       <span className="fs-4">Min egen salladsbar</span>
@@ -26,7 +30,7 @@ function Header() {
   );
 }
 
-function NavBar() { 
+function NavBar() {
   return (
     <ul className="nav nav-tabs">
       <li className="nav-item">
@@ -48,11 +52,21 @@ function NavBar() {
   );
 }
 
-function Footer() { 
+function Footer() {
   return (
     <footer className="pt-3 mt-4 text-muted border-top">
       EDAF90 - webprogrammering
     </footer>
+  );
+}
+
+function BootstrapSpinner() {
+  return (
+    <div className="d-flex justify-content-center">
+      <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
   );
 }
 
