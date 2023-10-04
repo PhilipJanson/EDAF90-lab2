@@ -3,14 +3,16 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { useState } from "react";
 import { NavLink, Outlet, useNavigation } from "react-router-dom";
-import inventory from "./inventory.mjs";
 
 function App() {
-  const [salads, setSalad] = useState([]);
+  const [salads, addSalad] = useState([]);
+  const context = {
+    salads: salads,
+    addSalad: addSalad
+  }
 
   const isLoading = useNavigation().state === 'loading';
-  //console.log(isLoading)
-  const element = isLoading ? <BootstrapSpinner/>: <Outlet context={[salads, inventory, setSalad]} />;
+  const element = isLoading ? <BootstrapSpinner/>: <Outlet context={context} />;
 
   return (
     <div className="container py-4">

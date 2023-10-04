@@ -1,9 +1,8 @@
 import { useOutletContext, useParams, Outlet } from "react-router-dom";
 
 function Confirm() {
-  const [salads] = useOutletContext();
+  const salads = useOutletContext().salads;
   const uuid = useParams().uuid;
-  console.log(uuid)
   const salad = salads.find((salad) => salad.uuid === uuid);
 
   if (!salad) {
@@ -23,11 +22,11 @@ function Confirm() {
 }
 
 function ViewOrder() {
-  const [salads, inventory, addSalad] = useOutletContext();
+  const salads = useOutletContext().salads;
 
   return (
     <div className="row h-200 p-5 bg-light border rounded-3">
-      <Outlet context={[salads]}></Outlet>
+      <Outlet context={{salads: salads}}></Outlet>
       <h2>Varukorgen</h2>
       <ul className="list-group">
         {salads.map((salad) => (

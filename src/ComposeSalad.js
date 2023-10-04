@@ -4,7 +4,7 @@ import { useOutletContext, useLoaderData, useNavigate } from 'react-router-dom';
 
 function ComposeSalad() {
   const inventory = useLoaderData();
-  const [salads, inventory1, addSalad] = useOutletContext();
+  const addSalad = useOutletContext().addSalad;
   const navigate = useNavigate();
 
   // Lists of all ingredients

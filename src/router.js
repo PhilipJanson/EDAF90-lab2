@@ -4,7 +4,6 @@ import ErrorPage from "./error";
 import ComposeSalad from "./ComposeSalad";
 import { ViewOrder, Confirm } from "./ViewOrder";
 import Index from "./index.js";
-import inventory from "./inventory.mjs";
 
 const router = createBrowserRouter([
   {
@@ -71,17 +70,5 @@ function safeFetchJson(url) {
     return response.json();
   });
 }
-
-/*
-  await fetchFoundations().then((foundations) =>
-    Array.prototype.forEach.call(foundations, (foundation) => {
-      fetchIngredient(foundation).then((ingredient) => {
-        console.log(foundation);
-        console.log(ingredient);
-        inventory[foundation] = ingredient;
-      });
-    })
-  );
-*/
 
 export default router;
