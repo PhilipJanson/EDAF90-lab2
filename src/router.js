@@ -34,27 +34,25 @@ const router = createBrowserRouter([
 ]);
 
 async function inventoryLoader() {
-  const inventory = {};
-
-  await Promise.all([
-    new Promise((resolve) => setTimeout(resolve, 500)),
-    fetchCategory("foundations", inventory),
-    fetchCategory("proteins", inventory),
-    fetchCategory("extras", inventory),
-    fetchCategory("dressings", inventory),
-  ]);
-
-  return inventory;
+  //new Promise((resolve) => setTimeout(resolve, 1000));
+  return fetchCategory("foundations", {})
+    .then((inventory) => fetchCategory("proteins", inventory))
+    .then((inventory) => fetchCategory("extras", inventory))
+    .then((inventory) => fetchCategory("dressings", inventory));
 }
 
 async function fetchCategory(category, inventory) {
-  return safeFetchJson(`http://localhost:8080/${category}/`).then((values) => {
-    values.forEach((name) => {
-      fetchIngredient(category, name).then((ingredient) => {
-        inventory[name] = ingredient;
-      });
-    });
-  });
+  return safeFetchJson(`http://localhost:8080/${category}/`)
+    .then((values) => {
+      Promise.all(
+        values.map((name) => {
+          return fetchIngredient(category, name).then((ingredient) => {
+            inventory[name] = ingredient;
+          });
+        })
+      );
+    })
+    .then(() => inventory);
 }
 
 async function fetchIngredient(category, ingredient) {
