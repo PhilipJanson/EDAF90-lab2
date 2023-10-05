@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import ErrorPage from "./error";
 import ComposeSalad from "./ComposeSalad";
-import { ViewOrder, Confirm } from "./ViewOrder";
+import { ViewOrder, ConfirmAlert } from "./ViewOrder";
 import Index from "./index.js";
 
 const router = createBrowserRouter([
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "confirm/:uuid",
-            element: <Confirm />,
+            element: <ConfirmAlert />,
           },
         ],
       },

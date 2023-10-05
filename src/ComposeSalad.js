@@ -84,7 +84,7 @@ function ComposeSalad() {
           value={dressing}
           onChange={setDressing}
         />
-        <input type="submit" className="btn btn-primary" value="Beställ" />
+        <input type="submit" className="btn btn-primary" value="Lägg till" />
       </form>
     </div>
   );
