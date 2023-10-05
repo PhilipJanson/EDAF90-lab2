@@ -50,6 +50,7 @@ function ComposeSalad() {
 
     // Update salad list in App
     addSalad((prevState) => [...prevState, salad]);
+    window.localStorage.setItem(salad.uuid, JSON.stringify(salad))
     navigate(`/view-order/confirm/${salad.uuid}`)
   }
 

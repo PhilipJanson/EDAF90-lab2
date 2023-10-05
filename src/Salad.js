@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
 class Salad {
-  static instanceCounter = 0;
-
   constructor(copy) {
     if (copy) {
       this.ingredients = {
@@ -12,7 +10,6 @@ class Salad {
       this.ingredients = {};
     }
 
-    this.id = 'salad_' + Salad.instanceCounter++;
     this.uuid = uuidv4();
   }
 

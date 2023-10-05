@@ -8,11 +8,15 @@ function App() {
   const [salads, addSalad] = useState([]);
   const context = {
     salads: salads,
-    addSalad: addSalad
-  }
+    addSalad: addSalad,
+  };
 
-  const isLoading = useNavigation().state === 'loading';
-  const element = isLoading ? <BootstrapSpinner/>: <Outlet context={context} />;
+  const isLoading = useNavigation().state === "loading";
+  const element = isLoading ? (
+    <BootstrapSpinner />
+  ) : (
+    <Outlet context={context} />
+  );
 
   return (
     <div className="container py-4">

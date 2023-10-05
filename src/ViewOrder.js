@@ -1,12 +1,22 @@
 import { useState } from "react";
-import { useOutletContext, useParams, Outlet } from "react-router-dom";
+import { useOutletContext, useParams, Outlet, useNavigate } from "react-router-dom";
 import Toast from "react-bootstrap/Toast";
+import Salad from "./Salad";
 
 function ViewOrder() {
   const salads = useOutletContext().salads;
   const addSalad = useOutletContext().addSalad;
   const [responseData, setResponseData] = useState({});
   const [show, toggle] = useState(false);
+  const uuid = useParams().uuid;
+  const navigate = useNavigate();
+
+  if (salads.length === 0) {
+    const parse = window.localStorage.getItem(uuid);
+    if (parse !== null) {
+      salads.push(Salad.parse(parse));
+    }
+  }
 
   async function handleSubmit() {
     const data = [];
@@ -28,6 +38,7 @@ function ViewOrder() {
         setResponseData(json);
         toggle(true);
         addSalad([]);
+        navigate('/view-order');
       });
   }
 
