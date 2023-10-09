@@ -33,7 +33,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-async function inventoryLoader() {
+function inventoryLoader() {
   //new Promise((resolve) => setTimeout(resolve, 1000));
   return fetchCategory("foundations", {})
     .then((inventory) => fetchCategory("proteins", inventory))
@@ -44,11 +44,10 @@ async function inventoryLoader() {
 async function fetchCategory(category, inventory) {
   return safeFetchJson(`http://localhost:8080/${category}/`)
     .then((values) => {
-      Promise.all(
-        values.map((name) => {
-          return fetchIngredient(category, name).then((ingredient) => {
-            inventory[name] = ingredient;
-          });
+      return Promise.all(
+        values.map(async (name) => {
+          const ingredient = await fetchIngredient(category, name);
+          inventory[name] = ingredient;
         })
       );
     })
